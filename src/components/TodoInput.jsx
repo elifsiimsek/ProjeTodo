@@ -1,27 +1,34 @@
 import { useState } from "react";
 
 export default function TodoInput({ addTodo }) {
-  const [text, setText] = useState("");
+  const [input, setInput] = useState("");
 
-  const handleAdd = () => {
-    if (!text.trim()) return;
-    addTodo(text);
-    setText("");
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    if (!input.trim()) return;
+
+    addTodo(input);
+    setInput(""); 
   };
 
   return (
-    <div className="input-section">
+    <form
+      onSubmit={handleSubmit}
+      className="flex gap-3"
+    >
       <input
-        className="todo-input-field"
         type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
         placeholder="Yeni kitap ekle..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+        className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
       />
-      <button className="add-btn" onClick={handleAdd}>
+
+      <button
+        type="submit"
+        className="px-5 py-2 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 active:scale-95 transition ">
         Ekle
       </button>
-    </div>
+    </form>
   );
 }
